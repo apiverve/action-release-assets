@@ -40,5 +40,5 @@ outputs:
     description: 'Path to the downloaded file (if output_file was specified)'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'

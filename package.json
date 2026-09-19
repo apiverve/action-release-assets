@@ -1,6 +1,6 @@
 {
   "name": "@apiverve/action-release-assets",
-  "version": "0.1.0-beta",
+  "version": "1.0.0",
   "description": "Generate QR codes, barcodes, and badges for your GitHub releases",
   "main": "dist/index.js",
   "scripts": {

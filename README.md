@@ -2,8 +2,6 @@
 
 > Generate QR codes, barcodes, and badges for your GitHub releases
 
-> **Beta Release** - This action is in beta. We'd love your feedback! [Open an issue](https://github.com/apiverve/action-release-assets/issues) if you encounter any problems.
-
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Release_Assets-blue?logo=github)](https://github.com/apiverve/action-release-assets)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -24,8 +22,8 @@ This action provides access to APIVerve's Release Assets APIs directly in your G
 | API | Description |
 |-----|-------------|
 | `qrcodegenerator` | QR Code Generator creates customizable QR codes with support for colors, gradients, logos, and various styling options. Generate professional QR codes for marketing, packaging, and digital experiences. |
-| `barcodegenerator` | Barcode Generator is a simple tool for generating barcodes from data. It returns a URL to the generated image of the barcode. |
-| `qrcodereader` | QR Code Reader is a powerful tool that extracts text and data from QR codes in images. Simply provide an image URL or upload an image containing a QR code to decode its contents. |
+| `barcodegenerator` | Barcode Generator creates downloadable barcode images from text or product codes in Code 128 or Code 39 formats. Each response provides a temporary image download link, file format, and expiration timestamp. |
+| `qrcodereader` | QR Code Reader decodes text and web links from uploaded QR code images. Send a JPG, PNG, or GIF file up to 10 MB to retrieve the raw encoded payload, with paid plans adding corner coordinates. |
 
 ---
 
@@ -37,7 +35,7 @@ This action provides access to APIVerve's Release Assets APIs directly in your G
   with:
     api_key: ${{ secrets.APIVERVE_KEY }}
     api: qrcodegenerator
-    params: '{&quot;value&quot;: &quot;https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}&quot;, &quot;size&quot;: 300}'
+    params: '{"value": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}", "size": 300}'
     output_file: ./release-qr.png
 ```
 
@@ -79,7 +77,6 @@ Go to your repository **Settings** → **Secrets and variables** → **Actions**
 | `output_file` | Path to save binary output (images, PDFs) | No | - |
 | `format` | Response format: `json`, `yaml`, or `xml` | No | `json` |
 | `fail_on_error` | Fail workflow if API returns error | No | `true` |
-
 *\*API key is required but can be provided via input OR `APIVERVE_API_KEY` / `APIVERVE_KEY` environment variable.*
 
 ## Outputs
@@ -90,7 +87,6 @@ Go to your repository **Settings** → **Secrets and variables** → **Actions**
 | `data` | The `data` field from response as JSON |
 | `status` | API status (`ok` or `error`) |
 | `file` | Path to downloaded file (if `output_file` was used) |
-
 ---
 
 ## Examples
@@ -106,7 +102,7 @@ Generate a QR code linking to the release page
   with:
     api_key: ${{ secrets.APIVERVE_KEY }}
     api: qrcodegenerator
-    params: '{&quot;value&quot;: &quot;https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}&quot;, &quot;size&quot;: 300}'
+    params: '{"value": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}", "size": 300}'
     output_file: ./release-qr.png
 
 - name: Upload artifact
@@ -127,7 +123,7 @@ Generate a barcode with the version number
   with:
     api_key: ${{ secrets.APIVERVE_KEY }}
     api: barcodegenerator
-    params: '{&quot;value&quot;: &quot;${{ github.ref_name }}&quot;, &quot;type&quot;: &quot;code128&quot;}'
+    params: '{"data": "${{ github.ref_name }}", "type": "code128"}'
     output_file: ./version-barcode.png
 
 - name: Upload artifact
@@ -162,7 +158,7 @@ jobs:
         with:
           api_key: ${{ secrets.APIVERVE_KEY }}
           api: qrcodegenerator
-          params: '{&quot;value&quot;: &quot;https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}&quot;, &quot;size&quot;: 300}'
+          params: '{"value": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}", "size": 300}'
           output_file: ./release-qr.png
 
       - name: Show result
